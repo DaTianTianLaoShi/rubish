@@ -63,6 +63,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\NewBehaviourScript.cs" />
     <Compile Include="Assets\script\drawline.cs" />
     <Compile Include="Assets\script\ll.cs" />
     <Compile Include="Assets\script\qqqq.cs" />
@@ -75,6 +76,7 @@
     <None Include="Assets\aaa\NewUnlitShader.shader" />
     <None Include="Assets\Ludiq\Assemblies\Ludiq.Platforms.xml" />
     <None Include="Assets\Ludiq\Ludiq.Core\DotNetDocumentation\mscorlib.xml" />
+    <None Include="Assets\aaa\NewUnlitShader2.shader" />
     <None Include="Assets\Ludiq\Ludiq.Core\DotNetDocumentation\System.Security.xml" />
     <None Include="Assets\Ludiq\Ludiq.Core\DotNetDocumentation\Microsoft.Build.Framework.xml" />
     <None Include="Assets\Ludiq\Ludiq.Core\DotNetDocumentation\System.Core.xml" />
