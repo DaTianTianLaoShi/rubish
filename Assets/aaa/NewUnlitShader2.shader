@@ -50,11 +50,9 @@ Shader "Unlit/NewUnlitShader"
         o.textures1 = mul(unity_ObjectToWorld,v.ve).xyz;
 		o.uv = v.tex.xy* _MainTex_ST.xy + _MainTex_ST.zw;
         fixed3 WordNormaze = normalize(mul(v.no,(float3x3)unity_WorldToObject));
-
         fixed3 guangzhaofangxiang = UNITY_LIGHTMODEL_AMBIENT.xyz;
         fixed3 worldLight = normalize(_WorldSpaceLightPos0.xyz);
         fixed3 de = _LightColor0.rgb*saturate(dot(WordNormaze,worldLight))*_abc.rgb;
-       
         o.colour = de + WordNormaze;
         return o;
     }
@@ -66,13 +64,14 @@ Shader "Unlit/NewUnlitShader"
 	     //存储光照方向，并且归一化
 	    fixed3 worldLightNormal = normalize(UnityWorldSpaceLightDir(a.textures1));
 		fixed3 worldLightDir = normalize(_WorldSpaceLightPos0.xyz);
-		fixed3 albedo = tex2D(_MainTex,a.uv).rgb;//进行纹理采样
-		fixed3 ambin = UNITY_LIGHTMODEL_AMBIENT.xyz;//系统环境光
+		fixed3 albedo = tex2D(_MainTex,a.uv).rgb*_abc.rgb;//进行纹理采样
+		fixed3 ambin = UNITY_LIGHTMODEL_AMBIENT.xyz*albedo;//系统环境光
 		fixed3 diffuse = _LightColor0.rgb*albedo*max(0,dot(normal, worldLightNormal));
-		fixed3 reflecdir = normalize(reflect(worldLightDir,worldLightNormal));
-		fixed3 viewDir = normalize(_WorldSpaceCameraPos.xyz-a.vertex.xyz);
-			fixed3 specular = _LightColor0.rgb*_Specular.rgb*pow(saturate(dot(reflecdir, viewDir)),_Gloss);
-        return fixed4(ambin+diffuse+ specular+albedo,1.0);
+		fixed3 reflecdir = normalize(worldLightDir+worldLightNormal);
+		fixed3 viewDir = normalize(UnityWorldSpaceViewDir(a.textures1));
+        fixed3 halfDir = normalize(worldLightDir+viewDir);
+	    fixed3 specular = _LightColor0.rgb*_Specular.rgb*pow(max(0,dot(normal, halfDir)),_Gloss);
+        return fixed4(ambin+diffuse+ specular,1.0);
         //加入光照
     }
     ENDCG
